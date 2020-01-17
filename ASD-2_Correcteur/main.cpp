@@ -55,10 +55,11 @@ bool isWordInSet(const std::unordered_set<string>& set, string word) {
 
 void letterInExcess(const unordered_set<string>& dico, string word, vector<string>& corrections){
     string check;
+    bool firstCorrection = true;
     for(int i = 0; i < word.length(); ++i){
         check = word.substr(0, i) + word.substr(i+1, word.length());
         if(isWordInSet(dico,word)){
-            corrections.push_back(check);
+            corrections.push_back("1:"+check);
         }
     }
 }
@@ -70,11 +71,7 @@ void wrongLetter(const unordered_set<string>& dico, string word, vector<string>&
         for(char alpha = 'a'; alpha <= 'z' ; alpha++){
             check[i] = alpha;
             if(isWordInSet(dico,check)){
-                if(firstCorrection){
-                    corrections.push_back("3:");
-                    firstCorrection = false;
-                }
-                corrections.push_back(check);
+                corrections.push_back("3:"+check);
             }
         }
 
@@ -91,11 +88,7 @@ void swappedLetter(const unordered_set<string>& dico, string word, vector<string
         temp[i] = temp[i+1];
         temp[i+1] = ctemp;
         if(isWordInSet(dico,temp)){
-            if(firstCorrection){
-                corrections.push_back("4:");
-                firstCorrection = false;
-            }
-            corrections.push_back(temp);
+            corrections.push_back("4:"+temp);
         }
     }
 }
@@ -111,11 +104,7 @@ void letterMissing(const unordered_set<string>& dico, string word, vector<string
             check.insert(i, size, alphabet[j]);
 
             if(isWordInSet(dico, word)) {
-                if(firstCorrection){
-                    corrections.push_back("2:");
-                    firstCorrection = false;
-                }
-                corrections.push_back(check);
+                corrections.push_back("2:"+check);
 
             }
         }
@@ -124,9 +113,9 @@ void letterMissing(const unordered_set<string>& dico, string word, vector<string
 void setCorrections(const unordered_set<string>& dico, string word, vector<string>& corrections){
     corrections.push_back("*"+word);
     letterInExcess(dico,word,corrections);
+    letterMissing(dico,word,corrections);
     wrongLetter(dico,word,corrections);
     swappedLetter(dico,word,corrections);
-    letterMissing(dico,word,corrections);
 }
 
 int main() {
@@ -152,7 +141,9 @@ int main() {
 
     fstream nicoLaBite("input_wikipedia.txt");
     string line;
+    vector<string> wrongWords;
     vector<string> corrections;
+    std::unordered_set<string> wrongWordsSet;
 
     if (nicoLaBite.is_open()) {
 
@@ -175,13 +166,21 @@ int main() {
                     motDansDictionnaire++;
                 }else{
                     motPasDansDictionnaire++;
-                    setCorrections(dictionary,match.str(),corrections);
+                    //Si le motPasDansDictionnaire n'a pas deja été traité
+                    if(wrongWordsSet.count(match.str()) == 0){
+                        wrongWords.push_back(match.str());
+                        wrongWordsSet.insert(match.str());
+                    }
                 }
             }
         }
         nicoLaBite.close();
     } else {
         cout << "Fail to open file : " << "input_wiki" << endl;
+    }
+
+    for(string word : wrongWords){
+        setCorrections(dictionary,word, corrections);
     }
 
     cout << "Mots totaux dans le dictionnaire : " << dictionary.size() << endl;
