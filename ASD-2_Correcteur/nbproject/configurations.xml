@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="100">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="Labo5_data" displayName="Labo5_data" projectFiles="true">
+      <itemPath>Labo5_data/dictionary.txt</itemPath>
+      <itemPath>Labo5_data/input_lates.txt</itemPath>
+      <itemPath>Labo5_data/input_sh.txt</itemPath>
+      <itemPath>Labo5_data/input_simple.txt</itemPath>
+      <itemPath>Labo5_data/input_wikipedia.txt</itemPath>
+    </logicalFolder>
+    <logicalFolder name="Labo5_sources"
+                   displayName="Labo5_sources"
+                   projectFiles="true">
+      <itemPath>Labo5_sources/AVLTree.h</itemPath>
+      <itemPath>Labo5_sources/BinarySearchTree.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>main.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>../../../Desktop/Labo5_sources</Elem>
+    <Elem>../../../Desktop/Labo5_data</Elem>
+    <Elem>Labo5_data</Elem>
+    <Elem>Labo5_sources</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <standard>8</standard>
+        </ccTool>
+      </compileType>
+      <item path="Labo5_data/dictionary.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Labo5_data/input_lates.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Labo5_data/input_sh.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Labo5_data/input_simple.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Labo5_data/input_wikipedia.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Labo5_sources/AVLTree.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Labo5_sources/BinarySearchTree.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+          <standard>8</standard>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="Labo5_data/dictionary.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Labo5_data/input_lates.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Labo5_data/input_sh.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Labo5_data/input_simple.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Labo5_data/input_wikipedia.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Labo5_sources/AVLTree.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Labo5_sources/BinarySearchTree.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
