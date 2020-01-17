@@ -53,24 +53,24 @@ bool isWordInSet(const std::unordered_set<string>& set, string word) {
     return set.count(word) != 0;
 }
 
-void letterInExcess(const unordered_set<string>& dico, string word, vector<string>& corrections){
+void letterInExcess(const unordered_set<string>& dico, string word, vector<string>& corrections, bool& hasCorrection){
     string check;
-    bool firstCorrection = true;
     for(int i = 0; i < word.length(); ++i){
         check = word.substr(0, i) + word.substr(i+1, word.length());
         if(isWordInSet(dico,word)){
+            hasCorrection = true;
             corrections.push_back("1:"+check);
         }
     }
 }
 
-void wrongLetter(const unordered_set<string>& dico, string word, vector<string>& corrections){
+void wrongLetter(const unordered_set<string>& dico, string word, vector<string>& corrections, bool& hasCorrection){
     string check = word;
-    bool firstCorrection = true;
     for(int i = 0; i < word.length(); ++i){
         for(char alpha = 'a'; alpha <= 'z' ; alpha++){
             check[i] = alpha;
             if(isWordInSet(dico,check)){
+                hasCorrection = true;
                 corrections.push_back("3:"+check);
             }
         }
@@ -78,9 +78,8 @@ void wrongLetter(const unordered_set<string>& dico, string word, vector<string>&
     }
 }
 
-void swappedLetter(const unordered_set<string>& dico, string word, vector<string>& corrections){
+void swappedLetter(const unordered_set<string>& dico, string word, vector<string>& corrections, bool& hasCorrection){
 
-    bool firstCorrection = true;
     int len = word.length() -1;
     string temp = word;
     for(int i = 0; i < len;i++){
@@ -88,13 +87,13 @@ void swappedLetter(const unordered_set<string>& dico, string word, vector<string
         temp[i] = temp[i+1];
         temp[i+1] = ctemp;
         if(isWordInSet(dico,temp)){
+            hasCorrection = true;
             corrections.push_back("4:"+temp);
         }
     }
 }
 
-void letterMissing(const unordered_set<string>& dico, string word, vector<string>& corrections){
-    bool firstCorrection = true;
+void letterMissing(const unordered_set<string>& dico, string word, vector<string>& corrections, bool& hasCorrection){
     string check;
     const string alphabet = "abcdefghijklmnopqrstuvwxyz";
     const unsigned size = 1;
@@ -104,6 +103,7 @@ void letterMissing(const unordered_set<string>& dico, string word, vector<string
             check.insert(i, size, alphabet[j]);
 
             if(isWordInSet(dico, word)) {
+                hasCorrection = true;
                 corrections.push_back("2:"+check);
 
             }
@@ -111,11 +111,15 @@ void letterMissing(const unordered_set<string>& dico, string word, vector<string
     }
 }
 void setCorrections(const unordered_set<string>& dico, string word, vector<string>& corrections){
+    bool hasCorrection = false;
     corrections.push_back("*"+word);
-    letterInExcess(dico,word,corrections);
-    letterMissing(dico,word,corrections);
-    wrongLetter(dico,word,corrections);
-    swappedLetter(dico,word,corrections);
+    letterInExcess(dico,word,corrections,hasCorrection);
+    letterMissing(dico,word,corrections,hasCorrection);
+    wrongLetter(dico,word,corrections, hasCorrection);
+    swappedLetter(dico,word,corrections,hasCorrection);
+    if(!hasCorrection){
+        corrections.pop_back();
+    }
 }
 
 int main() {
