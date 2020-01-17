@@ -193,72 +193,13 @@ int main() {
 
     cout << "Mots totaux dans le dictionnaire : " << dictionary.size() << endl;
 
-    /*
-    cout << "mots pas dans le dico : " << motPasDansDictionnaire << endl;
-    cout << "mots dans le dico : " << motDansDictionnaire << endl;*/
 
     for(string elem : corrections){
         cout << elem << endl;
     }
 
     cout << " nbr de mots faux : " << wrongWords.size();
-    /*
-    for (it; it != input_sh.end(); it++) {
-        got = dictionary.find(*it);
 
-        if (got == input_sh.end()) {
-            cout << *it << " n'est pas dans le dictionnaire" << endl;
-            motPasDansDictionnaire++;
-        } else {
-            cout << *it << " est dans le dictionnaire." << endl;
-            motDansDictionnaire++;
-        }
-
-    }*/
-/*
-    for(string line: input_sh){
-        if(dictionary.count(line) != 0){
-            motDansDictionnaire++;
-        }else{
-            cout << line << " n'est pas dans le dico " << endl;
-            motPasDansDictionnaire++;
-        }
-    }*/
-
-
-
-
-
-
-    /*
-    ifstream myFile("input_wikipedia.txt");
-    string line;
-    int j = 0;
-    if(myFile.is_open()){
-        while(getline(myFile,line)){
-            j++;
-            cout << "fuck ASD " << endl;bool isWordInSet(std::unordered_set<string>& set,string word){
-    for(string wordInSet: set){
-        if(!word.compare(wordInSet)){
-            return true;
-        }
-    }
-    return false;
-    }
-        }
-    }else{
-        cout << "Fail to op file : " << line << endl;
-    }
-     */
-
-    /*
-        std::unordered_set<string> input_sh;
-        string myInput_sh = "input_sh.txt";
-        fillUnorderedSet(input_sh,myInput_sh, ' ');
-        for(string word : dictionary){
-            cout << word << endl;
-        }
-        cout << input_sh.size() << endl;*/
 
 
     return 0;
