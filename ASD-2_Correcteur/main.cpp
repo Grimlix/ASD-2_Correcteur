@@ -3,6 +3,13 @@
 #include <unordered_set>
 #include <fstream>
 #include <algorithm>
+#include <regex>
+
+
+
+
+
+
 
 using namespace std;
 
@@ -15,29 +22,26 @@ void fillUnorderedSet(std::unordered_set<string>& set, string file, char delim) 
    ifstream myDictionary(file);
    string line;
 
-   if (myDictionary.is_open()) {
-      //for each word in dictionary
-      while (getline(myDictionary, line, delim)) {
 
+   if (myDictionary.is_open()) {
+
+      std::regex words_regex("[a-z]+('[a-z]+)*");
+      auto words_end = std::sregex_iterator();
+      //for each word in dictionary
+      while (getline(myDictionary, line)) {
          //lowercaps the word
          transform(line.begin(), line.end(), line.begin(),
                  [](unsigned char c) {
                     return tolower(c); });
-
-         //remove non alpha of the words but leave '\''
-         int i = 0;
-         int len = line.length();
-
-         while (i < len) {
-            if (!isalpha(line[i]) && line[i] != '\'') {
-               line.erase(i, 1);
-               len--;
-            } else {
-               i++;
-            }
-         }
-
-         set.insert(line);
+                    
+     
+                    auto line_begin = sregex_iterator(line.begin(), line.end(), words_regex);
+                    auto line_end = sregex_iterator();
+                    
+                    for(sregex_iterator i = line_begin; i != line_end; i++){
+                       smatch match = *i;
+                       set.insert(match.str());
+                    }
       }
       myDictionary.close();
    } else {
@@ -73,26 +77,27 @@ int main() {
 
 
    std::unordered_set<string> input_sh;
-   string myInput_sh = "input_sh.txt";
+   string myInput_sh = "input_wikipedia.txt";
    fillUnorderedSet(input_sh, myInput_sh, ' ');
-   
-   
+
+
    unordered_set<string>::const_iterator it = input_sh.begin();
    unordered_set<string>::const_iterator got;
-   
-   cout << "Mots totaux : " << input_sh.size() << endl;
-   
+
+   cout << "Mots totaux dans le wiki : " << input_sh.size() << endl;
+   cout << "Mots totaux dans le dictionnaire : " << dictionary.size() << endl;
+
    int motDansDictionnaire = 0;
    int motPasDansDictionnaire = 0;
    string value;
-   for(it; it != input_sh.end(); it++){
+   for (it; it != input_sh.end(); it++) {
       got = dictionary.find(*it);
-      
-      if(got == input_sh.end()){
-         //cout << *it << " n'est pas dans le dictionnaire" << endl;  
+
+      if (got == input_sh.end()) {
+         cout << *it << " n'est pas dans le dictionnaire" << endl;
          motPasDansDictionnaire++;
-      }else{
-         //cout << *it << " est dans le dictionnaire." << endl;
+      } else {
+         cout << *it << " est dans le dictionnaire." << endl;
          motDansDictionnaire++;
       }
 
@@ -101,7 +106,6 @@ int main() {
 
    cout << "Mots dans le dictionnaire : " << motDansDictionnaire << endl;
    cout << "Mots pas dans le dictionnaire : " << motPasDansDictionnaire << endl;
-
 
 
 
@@ -140,3 +144,6 @@ int main() {
 
    return 0;
 }
+
+
+
