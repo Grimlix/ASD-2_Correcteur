@@ -1,19 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /* 
  * File:   TST.h
- * Author: nichu
+ * Author: Gianinetti Lucas, Hungerbühler Nicolas, Wojciechowski Cassandre
  *
- * Created on 18. janvier 2020, 00:45
+ * Remarques: classe TernarySearchTrie qui prend la plupart des fonctions de l'AVL
+ *            mise à disposition. Ils suffisaient d'ajouter 2 aspects : l'enfant du
+ *            milieu (mid) et le boolean disant que le mot est terminé ou non (endWord).
+ *            Nous avons alors garder uniquement les fonctions que vous avions besoin.
+ *            C'est à dire surtout : put (insérer un élément) et contains (savoir s'il
+ *            y a un mot dans ce conteneur). Et lorsqu'on insère un element il faut 
+ *            vérifier si celui-ci est toujours équilibré. Donc on va avoir besoin
+ *            des fonctions de hauteur (get la hauter et la changer) et bien sûr des 
+ *            rotations pour le rééquilibrer. L'équilibre et les rotations sont exactement
+ *            les même que pour un AVL car l'enfant du milieu n'est pas tenu en compte.
+ *            Nous avons décidé de garder le destructeur.
+ *          
  */
 
 #ifndef TST_H
 #define TST_H
-
 
 #include <string>
 
@@ -21,10 +26,6 @@ using namespace std;
 
 class TernarySearchTree {
 private:
-   //
-   // Noeux de l'arbre. contient une cle, une valeur, et les liens vers les
-   // sous-arbres droit et gauche.
-   //
 
    struct Node {
       char key;
@@ -42,10 +43,6 @@ private:
    // Racine de l'arbre.
    //
    Node* root;
-   
-   ////////////////////////////////////////////
-   ////////////////////////////////////////////
-   ////////////////////////////////////////////
 
 public:
    //
@@ -58,14 +55,15 @@ public:
    //
    // Destructeur.
    //
-/*
+
    ~TernarySearchTree() {
       deleteSubTree(root);
-   }*/
+   }
 
    // Insertion d'une paire cle / valeur.
-   // endWord default value is false.
+   // endWord valeur par default est false.
    //
+
    void put(const std::string key) {
       root = put(root, key, 0);
    }
@@ -82,20 +80,15 @@ public:
          } else if (word > x->key) {
             x = x->right;
          } else if (x->endWord == true && pos == key.length() - 1) {
-            //we are at the end of the word and the node is true
-            //we found the word!
+            //On est à la fin du mot et le dernier noeud à son boolean de fin de mot
+            //a vrai. On a alors trouver le mot
             return true;
-         } else { // else it's middle.
+         } else { // else c'est le milieu
             x = x->mid;
-            pos++;
          }
       }
       return false;
    }
-
-   ////////////////////////////////////////////
-   ////////////////////////////////////////////
-   ////////////////////////////////////////////
 
 private:
    //
@@ -140,15 +133,14 @@ private:
       return y;
    }
 
-   /*
    void deleteSubTree(Node* x) {
       if (x == nullptr) return;
-     // deleteSubTree(x->right);
-     // deleteSubTree(x->mid);
-     // deleteSubTree(x->left);
+      deleteSubTree(x->right);
+      deleteSubTree(x->mid);
+      deleteSubTree(x->left);
 
       delete x;
-   }*/
+   }
 
    //
    // AVL: calcul et restoration de l'équilibre d'un noeud.
@@ -176,7 +168,6 @@ private:
    }
 
    Node* put(Node* x, const std::string& key, int pos) {
-
       char nodeVal = key[pos];
 
       //Creer le nouveau noeud
@@ -197,7 +188,7 @@ private:
          x->endWord = true;
       }
 
-      return restoreBalance(x); // AVL. sinon on aurait return x; 
+      return restoreBalance(x);
    }
 
 };
