@@ -6,54 +6,22 @@
 #include <regex>
 #include <vector>
 
-
-
-
+#include "TST.h"
+#include "Dictionary.h"
 
 
 using namespace std;
 
-/**
- * Fill an ordered set with lines from a text file
- * @param set set to fill with lines
- * @param file file from which get lines
- */
-void fillUnorderedSet(std::unordered_set<string>& set, string file, char delim) {
-    ifstream myDictionary(file);
-    string line;
 
-
-    if (myDictionary.is_open()) {
-
-        std::regex words_regex("[a-z]+('[a-z]+)*");
-        auto words_end = std::sregex_iterator();
-        //for each word in dictionary
-        while (getline(myDictionary, line)) {
-            //lowercaps the word
-            transform(line.begin(), line.end(), line.begin(),
-                      [](unsigned char c) {
-                          return tolower(c); });
-
-
-            auto line_begin = sregex_iterator(line.begin(), line.end(), words_regex);
-            auto line_end = sregex_iterator();
-
-            for(sregex_iterator i = line_begin; i != line_end; i++){
-                smatch match = *i;
-                set.insert(match.str());
-            }
-        }
-        myDictionary.close();
-    } else {
-        cout << "Fail to open file : " << file << endl;
-    }
+bool isWordInSet(Dictionary dico, string word) {
+    return (dico.find_contains(word));
 }
+/*
+bool isWordInVector(const std::vector<string>& v, string word){
+    return std::count(v.begin(),v.end(),word);
+}*/
 
-bool isWordInSet(const std::unordered_set<string>& set, string word) {
-    return set.count(word) != 0;
-}
-
-void letterInExcess(const unordered_set<string>& dico, string word, vector<string>& corrections, bool& hasCorrection){
+void letterInExcess(const Dictionary& dico, string word, vector<string>& corrections, bool& hasCorrection){
     string check;
     for(int i = 0; i < word.length(); ++i){
         check = word.substr(0, i) + word.substr(i+1, word.length());
@@ -64,7 +32,7 @@ void letterInExcess(const unordered_set<string>& dico, string word, vector<strin
     }
 }
 
-void letterMissing(const unordered_set<string>& dico, string word, vector<string>& corrections, bool& hasCorrection){
+void letterMissing(const Dictionary& dico, string word, vector<string>& corrections, bool& hasCorrection){
     string check;
     const string alphabet = "abcdefghijklmnopqrstuvwxyz";
     const unsigned size = 1;
@@ -82,7 +50,7 @@ void letterMissing(const unordered_set<string>& dico, string word, vector<string
     }
 }
 
-void wrongLetter(const unordered_set<string>& dico, string word, vector<string>& corrections, bool& hasCorrection){
+void wrongLetter(const Dictionary& dico, string word, vector<string>& corrections, bool& hasCorrection){
     string check = word;
     const string alphabet = "abcdefghijklmnopqrstuvwxyz";
     for(int i = 0; i < word.length(); ++i){
@@ -98,7 +66,7 @@ void wrongLetter(const unordered_set<string>& dico, string word, vector<string>&
     }
 }
 
-void swappedLetter(const unordered_set<string>& dico, string word, vector<string>& corrections, bool& hasCorrection){
+void swappedLetter(const Dictionary& dico, string word, vector<string>& corrections, bool& hasCorrection){
 
     int len = word.length() -1;
     string temp = word;
@@ -115,21 +83,20 @@ void swappedLetter(const unordered_set<string>& dico, string word, vector<string
 }
 
 
-void setCorrections(const unordered_set<string>& dico, string word, vector<string>& corrections){
+void setCorrections(const Dictionary& dico, string word, vector<string>& corrections){
     bool hasCorrection = false;
     corrections.push_back("*"+word);
     letterInExcess(dico,word,corrections,hasCorrection);
     letterMissing(dico,word,corrections,hasCorrection);
     wrongLetter(dico,word,corrections, hasCorrection);
     swappedLetter(dico,word,corrections,hasCorrection);
-   /* if(!hasCorrection){
-        corrections.pop_back();
-    }*/
+    /* if(!hasCorrection){
+         corrections.pop_back();
+     }*/
 }
 
 int main() {
 
-    //637850
 
     //////////////////////////////////////////////////////////////////
     //                          FIRST PART                          //
@@ -139,14 +106,15 @@ int main() {
     //for reasearch. And we chose unordered_set instead of unordered_map
     //because unordered_map insert the element when a research doesn't find an element
 
-    //Create a unordered_set and fill it with words from dictionary
-    std::unordered_set<string> dictionary;
+    const int TST_MODE = 1;
+    const int STL_MODE = 2;
+
     string myDictionary = "dictionary.txt";
-    fillUnorderedSet(dictionary, myDictionary, '\n');
+
+    Dictionary dictionary = Dictionary(myDictionary, STL_MODE);
 
     int motDansDictionnaire = 0;
     int motPasDansDictionnaire = 0;
-
 
     fstream nicoLaBite("input_wikipedia.txt");
     string line;
@@ -155,7 +123,7 @@ int main() {
 
     if (nicoLaBite.is_open()) {
 
-        std::regex words_regex("([a-z]|[A-Z])+('([a-z]|[A-Z])+)*");
+        std::regex words_regex("[a-z]+('[a-z]+)*");
         auto words_end = std::sregex_iterator();
         //for each word in dictionary
         while (getline(nicoLaBite, line)) {
@@ -170,39 +138,39 @@ int main() {
 
             for(sregex_iterator i = line_begin; i != line_end; i++){
                 smatch match = *i;
-
-                if(dictionary.count(match.str()) != 0){
+                if(isWordInSet(dictionary, match.str())){
+                    cout << "Je suis là 1" << endl;
                     motDansDictionnaire++;
-                    //cout << match.str() << endl;
                 }else{
                     motPasDansDictionnaire++;
-                    //Si le motPasDansDictionnaire n'a pas deja été traité
-                 //   if(!isWordInVector(wrongWords,match.str())){
-                        wrongWords.push_back(match.str());
-                    //}
+                    wrongWords.push_back(match.str());
+
                 }
             }
         }
+        cout << "Je suis là 2" << endl;
         nicoLaBite.close();
+        cout << "Je suis là 3" << endl;
     } else {
         cout << "Fail to open file : " << "input_wiki" << endl;
     }
 
     for(string word : wrongWords){
+        cout << "Je suis là 4" << endl;
         setCorrections(dictionary,word, corrections);
     }
 
-    cout << "Mots totaux dans le dictionnaire : " << dictionary.size() << endl;
+    //cout << "Mots totaux dans le dictionnaire : " << dictionary.size() << endl;
 
+    /*
+    cout << "mots pas dans le dico : " << motPasDansDictionnaire << endl;
+    cout << "mots dans le dico : " << motDansDictionnaire << endl;*/
 
     for(string elem : corrections){
         cout << elem << endl;
     }
 
-    cout << " nbr de mots faux : " << wrongWords.size();
-
-    cout << " mot pas dans dico : " << motPasDansDictionnaire << endl;
-
+    cout << " nbr de mots faux : " << motPasDansDictionnaire;
 
     return 0;
 }
