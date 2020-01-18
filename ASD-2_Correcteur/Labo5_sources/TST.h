@@ -58,10 +58,10 @@ public:
    //
    // Destructeur.
    //
-
+/*
    ~TernarySearchTree() {
       deleteSubTree(root);
-   }
+   }*/
 
    // Insertion d'une paire cle / valeur.
    // endWord default value is false.
@@ -87,6 +87,7 @@ public:
             return true;
          } else { // else it's middle.
             x = x->mid;
+            pos++;
          }
       }
       return false;
@@ -139,14 +140,15 @@ private:
       return y;
    }
 
+   /*
    void deleteSubTree(Node* x) {
       if (x == nullptr) return;
-      deleteSubTree(x->right);
-      deleteSubTree(x->mid);
-      deleteSubTree(x->left);
+     // deleteSubTree(x->right);
+     // deleteSubTree(x->mid);
+     // deleteSubTree(x->left);
 
       delete x;
-   }
+   }*/
 
    //
    // AVL: calcul et restoration de l'équilibre d'un noeud.
