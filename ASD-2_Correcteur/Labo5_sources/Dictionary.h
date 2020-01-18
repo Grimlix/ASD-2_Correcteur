@@ -1,5 +1,5 @@
 /*
- * File:   main.cpp
+ * File:   Dictionary.h
  * Author: Gianinetti Lucas, Hungerbühler Nicolas, Wojciechowski Cassandre
  * Created on 18. janvier 2020
  *
