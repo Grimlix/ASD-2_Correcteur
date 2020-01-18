@@ -1,5 +1,5 @@
 /*
- * File:   Correction.h
+ * File:   correction.cpp
  * Author: Gianinetti Lucas, Hungerbühler Nicolas, Wojciechowski Cassandre
  * Created on 18. janvier 2020
  *
@@ -86,6 +86,45 @@ void setCorrections(Dictionary& dico, string word, vector<string>& corrections){
     swappedLetter(dico,word,corrections);
 
 
+}
+
+//generate corrections for each word of file not corresponding to a word in dictionary
+void generateCorrectionFromFile(fstream& file, vector<string>& corrections, Dictionary& dictionary){
+    string line;
+    vector<string> wrongWords;
+    //read content of file and fill wrongWords vector
+    if (file.is_open()) {
+
+        std::regex words_regex("[a-z]+('[a-z]+)*");
+        auto words_end = std::sregex_iterator();
+        //for each word in dictionary
+        while (getline(file, line)) {
+            //lowercaps the word
+            transform(line.begin(), line.end(), line.begin(),
+                      [](unsigned char c) {
+                          return tolower(c); });
+
+
+            auto line_begin = sregex_iterator(line.begin(), line.end(), words_regex);
+            auto line_end = sregex_iterator();
+
+            for(sregex_iterator i = line_begin; i != line_end; i++){
+                smatch match = *i;
+                if(!dictionary.find_contains(match.str())){
+                    wrongWords.push_back(match.str());
+                }
+
+            }
+        }
+        file.close();
+    } else {
+        cout << "Fail to open file : " << "input_wiki" << endl;
+    }
+
+    //for each wrong word generate corrections in vector<string>corrections
+    for(string word : wrongWords){
+        setCorrections(dictionary,word, corrections);
+    }
 }
 
 #endif //ASDLABO5_CORRECTION_H
