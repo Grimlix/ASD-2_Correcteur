@@ -1,3 +1,4 @@
+
 /*
  * File:   Dictionary.h
  * Author: Gianinetti Lucas, Hungerbühler Nicolas, Wojciechowski Cassandre
@@ -31,7 +32,7 @@ using namespace std;
 class Dictionary{
 
 private:
-   //Our two data structures
+    //Our two data structures
     TernarySearchTree dicoTST;
     unordered_set<string> dicoSTL;
 
@@ -82,13 +83,13 @@ public :
     //Returns true if the words is found in corresponding data structure
     //set uses count and TST uses contains.
     bool find_contains(const string& word){
-            if(modeTST){
-                return dicoTST.contains(word);
-            }else{
-                return (dicoSTL.count(word) != 0);
-            }
+        if(modeTST){
+            return dicoTST.contains(word);
+        }else{
+            return (dicoSTL.count(word) != 0);
         }
-   
+    }
+
 };
 
 
