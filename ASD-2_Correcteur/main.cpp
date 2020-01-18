@@ -53,10 +53,6 @@ bool isWordInSet(const std::unordered_set<string>& set, string word) {
     return set.count(word) != 0;
 }
 
-bool isWordInVector(const std::vector<string>& v, string word){
-    return std::count(v.begin(),v.end(),word);
-}
-
 void letterInExcess(const unordered_set<string>& dico, string word, vector<string>& corrections, bool& hasCorrection){
     string check;
     for(int i = 0; i < word.length(); ++i){
@@ -72,7 +68,7 @@ void letterMissing(const unordered_set<string>& dico, string word, vector<string
     string check;
     const string alphabet = "abcdefghijklmnopqrstuvwxyz";
     const unsigned size = 1;
-    for(int i = 0; i < word.length(); ++i){
+    for(int i = 0; i <= word.length(); ++i){
         for(int j = 0; j < alphabet.length(); ++j){
             check = word;
             check.insert(i, size, alphabet[j]);
@@ -88,9 +84,11 @@ void letterMissing(const unordered_set<string>& dico, string word, vector<string
 
 void wrongLetter(const unordered_set<string>& dico, string word, vector<string>& corrections, bool& hasCorrection){
     string check = word;
+    const string alphabet = "abcdefghijklmnopqrstuvwxyz";
     for(int i = 0; i < word.length(); ++i){
-        for(char alpha = 'a'; alpha <= 'z' ; alpha++){
-            check[i] = alpha;
+        check = word;
+        for(int j = 0; j < alphabet.length(); ++j){
+            check[i] = alphabet[j];
             if(isWordInSet(dico,check)){
                 hasCorrection = true;
                 corrections.push_back("3:"+check);
@@ -105,6 +103,7 @@ void swappedLetter(const unordered_set<string>& dico, string word, vector<string
     int len = word.length() -1;
     string temp = word;
     for(int i = 0; i < len;i++){
+        temp = word;
         char ctemp = temp[i];
         temp[i] = temp[i+1];
         temp[i+1] = ctemp;
@@ -123,9 +122,9 @@ void setCorrections(const unordered_set<string>& dico, string word, vector<strin
     letterMissing(dico,word,corrections,hasCorrection);
     wrongLetter(dico,word,corrections, hasCorrection);
     swappedLetter(dico,word,corrections,hasCorrection);
-    if(!hasCorrection){
+   /* if(!hasCorrection){
         corrections.pop_back();
-    }
+    }*/
 }
 
 int main() {
@@ -156,7 +155,7 @@ int main() {
 
     if (nicoLaBite.is_open()) {
 
-        std::regex words_regex("[a-z]+('[a-z]+)*");
+        std::regex words_regex("([a-z]|[A-Z])+('([a-z]|[A-Z])+)*");
         auto words_end = std::sregex_iterator();
         //for each word in dictionary
         while (getline(nicoLaBite, line)) {
@@ -171,14 +170,16 @@ int main() {
 
             for(sregex_iterator i = line_begin; i != line_end; i++){
                 smatch match = *i;
+
                 if(dictionary.count(match.str()) != 0){
                     motDansDictionnaire++;
+                    //cout << match.str() << endl;
                 }else{
                     motPasDansDictionnaire++;
                     //Si le motPasDansDictionnaire n'a pas deja été traité
-                    if(!isWordInVector(wrongWords,match.str())){
+                 //   if(!isWordInVector(wrongWords,match.str())){
                         wrongWords.push_back(match.str());
-                    }
+                    //}
                 }
             }
         }
@@ -200,6 +201,7 @@ int main() {
 
     cout << " nbr de mots faux : " << wrongWords.size();
 
+    cout << " mot pas dans dico : " << motPasDansDictionnaire << endl;
 
 
     return 0;
