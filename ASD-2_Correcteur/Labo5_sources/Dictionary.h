@@ -1,45 +1,49 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   Dictionary.h
- * Author: nichu
+ * File:   main.cpp
+ * Author: Gianinetti Lucas, Hungerbühler Nicolas, Wojciechowski Cassandre
+ * Created on 18. janvier 2020
  *
- * Created on 18. janvier 2020, 01:07
+ * Description: this is a wrapper that takes all the words in a file, in our case
+ *              a dictionary. And it stocks all these words in 2 types of data
+ *              structure depending on chosen mode.
+ *              modeTST = true ==> stock values in a TernarySearchTree<string>
+ *              modeSTL = false ==> stock values in a unordered_set<string>
+ *
+ *
+ *
  */
 
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 
-#include "TST.h"
-#include <string>
 #include <regex>
 #include <iostream>
 #include <string>
 #include <unordered_set>
 #include <fstream>
 #include <algorithm>
-#include <regex>
 #include <vector>
+
+#include "TST.h"
 
 using namespace std;
 
 class Dictionary{
 
 private:
+   //Our two data structures
     TernarySearchTree dicoTST;
     unordered_set<string> dicoSTL;
 
-    bool mode;
+    //Which mode is used, TST or set
+    //If it is true it's TST
+    bool modeTST;
 
 
 public :
     Dictionary(const string& filename, bool mode){
 
-        this->mode = mode;
+        this->modeTST = mode;
 
         ifstream file(filename);
         string line;
@@ -61,7 +65,7 @@ public :
                 for(sregex_iterator i = line_begin; i != line_end; i++){
                     smatch match = *i;
                     //add word in corresponding data structure
-                    if(mode){
+                    if(modeTST){
                         dicoTST.put(match.str());
                     }else{
                         dicoSTL.insert(match.str());
@@ -75,32 +79,18 @@ public :
     }
 
 
+    //Returns true if the words is found in corresponding data structure
+    //set uses count and TST uses contains.
     bool find_contains(const string& word){
-
-        // Si le mot est "vide", il est dans le dictionnaire
-        if (word.empty()) {
-            return true;
-        }else{
-            if(mode){
+            if(modeTST){
                 return dicoTST.contains(word);
             }else{
                 return (dicoSTL.count(word) != 0);
             }
-
         }
-
-
-    }
-
-
-
-
-
-
+   
 };
 
 
 
 #endif /* DICTIONARY_H */
-
-
