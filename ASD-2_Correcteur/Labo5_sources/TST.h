@@ -12,8 +12,7 @@
  *            vérifier si celui-ci est toujours équilibré. Donc on va avoir besoin
  *            des fonctions de hauteur (get la hauter et la changer) et bien sûr des 
  *            rotations pour le rééquilibrer. L'équilibre et les rotations sont exactement
- *            les même que pour un AVL car l'enfant du milieu n'est pas tenu en compte.
- *            Nous avons décidé de garder le destructeur.
+ *            les mêmes que pour un AVL car l'enfant du milieu n'est pas tenu en compte.          
  *          
  */
 
